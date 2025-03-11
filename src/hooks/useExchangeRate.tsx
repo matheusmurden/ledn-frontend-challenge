@@ -28,7 +28,10 @@ export const ExchangeRateContextProvider = ({ children }: { children: ReactNode 
 
 	const formatRate = (value: number) =>
 		Intl
-			.NumberFormat(undefined, { minimumSignificantDigits: 3, maximumSignificantDigits: 3 })
+			.NumberFormat(undefined, {
+				minimumFractionDigits: 3,
+				maximumFractionDigits: 3
+			})
 			.format(value)
 
 	const rateAsText = useMemo(() => {
@@ -39,7 +42,7 @@ export const ExchangeRateContextProvider = ({ children }: { children: ReactNode 
 		if (isLoading) {
 			return 'Loading...'
 		}
-		return `${formatRate(1.00)} ICS ≈ ${formatRate(data?.rate)} GSC`
+		return `1 ICS ≈ ${formatRate(data?.rate)} GCS`
 	}, [data?.rate, error?.message, isError, isLoading])
 
 	return (
