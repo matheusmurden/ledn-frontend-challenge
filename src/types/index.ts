@@ -3,6 +3,7 @@ export type Transaction = {
 	currency: 'ICS' | 'GCS'
 	date: string
 	id: string
+	status: 'inProgress' | 'blocked' | 'completed'
 	user: string
 }
 

@@ -9,7 +9,8 @@ type PlanetContextType = {
 	},
 	isLoading: boolean,
 	isError: boolean,
-	error: Error | null
+	error: Error | null,
+	refetchTransactions: () => void
 }
 
 const defaultValue = {
@@ -19,7 +20,8 @@ const defaultValue = {
 	},
 	isLoading: true,
 	isError: false,
-	error: null
+	error: null,
+	refetchTransactions: () => null
 }
 
 export const PlanetContext = createContext<PlanetContextType>(defaultValue)
@@ -41,7 +43,8 @@ export const PlanetContextProvider = ({ children, planetId }: { children: ReactN
 		data: transactionData,
 		isLoading: isLoadingTransaction,
 		isError: isErrorTransaction,
-		error: errorTransaction
+		error: errorTransaction,
+		refetch: refetchTransactions
 	} = useQuery<{ transactions: Transaction[] }>({
 		queryKey: [`transactions-${planetId}`],
 		queryFn: () => fetch(`/api/transactions/users/${JSON.stringify(planetData?.planet?.residents)}`)
@@ -56,7 +59,8 @@ export const PlanetContextProvider = ({ children, planetId }: { children: ReactN
 		},
 		isLoading: isLoadingPlanet || isLoadingTransaction,
 		isError: isErrorPlanet || isErrorTransaction,
-		error: errorPlanet || errorTransaction || null
+		error: errorPlanet || errorTransaction || null,
+		refetchTransactions
 	}
 
 	return (

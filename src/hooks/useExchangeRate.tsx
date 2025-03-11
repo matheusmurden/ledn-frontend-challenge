@@ -40,7 +40,7 @@ export const ExchangeRateContextProvider = ({ children }: { children: ReactNode 
 			return 'Something went wrong, please try again later'
 		}
 		if (isLoading) {
-			return 'Loading...'
+			return 'Loading Exchange Rate...'
 		}
 		return `1 ICS ≈ ${formatRate(data?.rate)} GCS`
 	}, [data?.rate, error?.message, isError, isLoading])

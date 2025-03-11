@@ -1,5 +1,5 @@
 import { SearchBar } from "../../components"
-import { SearchResults } from "../../components/SearchResults";
+import { SearchResults } from "../../components";
 import { SearchContextProvider } from "../../hooks";
 
 
