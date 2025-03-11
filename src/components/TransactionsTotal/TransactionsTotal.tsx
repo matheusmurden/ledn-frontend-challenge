@@ -12,6 +12,15 @@ const TableHeadCell = styled(Table.Th)`
 	@media screen and (prefers-color-scheme: dark) {
 		color: #92b7b1;
 	}
+	@media screen and (max-width: 720px) {
+		font-size: 0.65rem;
+	}
+`;
+
+const TotalsTd = styled(Table.Td)`
+	@media screen and (max-width: 720px) {
+		font-size: 0.65rem;
+	}
 `;
 
 export const TransactionsTotal = () => {
@@ -43,7 +52,7 @@ if (isLoading) {
 }
 
 	return !!data?.planet?.residents?.length && (
-		<Table.ScrollContainer minWidth={200}>
+		<Table.ScrollContainer minWidth={100}>
 			<Table striped withRowBorders withTableBorder>
 				<TableHeader>
 					<Table.Tr>
@@ -58,22 +67,22 @@ if (isLoading) {
 						<Table.Td>
 							ICS
 						</Table.Td>
-						<Table.Td>
+						<TotalsTd>
 							<NumberFormatter
 								value={totalICS}
 								decimalScale={2}
 								allowNegative={false}
 								thousandSeparator
 							/>
-						</Table.Td>
-						<Table.Td>
+						</TotalsTd>
+						<TotalsTd>
 							<NumberFormatter
 								value={totalICS * (rate ?? 1)}
 								decimalScale={2}
 								allowNegative={false}
 								thousandSeparator
 							/>
-						</Table.Td>
+						</TotalsTd>
 						<Table.Td>
 							-
 						</Table.Td>
@@ -82,25 +91,25 @@ if (isLoading) {
 						<Table.Td>
 							GCS
 						</Table.Td>
-						<Table.Td>
+						<TotalsTd>
 							<NumberFormatter
 								value={totalGCS}
 								decimalScale={2}
 								allowNegative={false}
 								thousandSeparator
 							/>
-						</Table.Td>
+						</TotalsTd>
 						<Table.Td>
 							-
 						</Table.Td>
-						<Table.Td>
+						<TotalsTd>
 							<NumberFormatter
 								value={totalGCS / (rate ?? 1)}
 								decimalScale={2}
 								allowNegative={false}
 								thousandSeparator
 							/>
-						</Table.Td>
+						</TotalsTd>
 					</Table.Tr>
 				</Table.Tbody>
 			</Table>
