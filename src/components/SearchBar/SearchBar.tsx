@@ -1,6 +1,14 @@
 import { debounce, startCase } from "lodash";
 import { useSearchContext } from "../../hooks";
 import { Card, Grid, GridCol, NativeSelect, TextInput, Title } from "@mantine/core";
+import styled from "styled-components";
+
+const SearchBarTitle = styled(Title)`
+	color: rgb(2, 61, 75);
+	@media screen and (prefers-color-scheme: dark) {
+		color: #92b7b1;
+	}
+`;
 
 export const SearchBar = () => {
 	const { allClimates, allTerrains, isError, error, isLoading, filterValues, setSearchFilters } = useSearchContext();
@@ -18,9 +26,9 @@ export const SearchBar = () => {
 				radius="sm"
 				withBorder
 			>
-				<Title order={1} c="rgb(2, 61, 75)" mt={0} mb="1.5rem">
+				<SearchBarTitle order={1} mt={0} mb="1.5rem">
 					Intergalactic Planetary Index
-				</Title>
+				</SearchBarTitle>
 				<Grid columns={3}>
 					<GridCol span={{ base: 3, md: 1, lg: 1 }}>
 						<TextInput

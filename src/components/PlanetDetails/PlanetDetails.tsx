@@ -5,6 +5,9 @@ import styled from "styled-components";
 
 const TableHeadCell = styled(Table.Th)`
 	color: rgb(2, 61, 75);
+	@media screen and (prefers-color-scheme: dark) {
+		color: #92b7b1;
+	}
 `;
 
 export const PlanetDetails = () => {

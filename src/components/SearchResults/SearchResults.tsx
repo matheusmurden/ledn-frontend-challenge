@@ -12,6 +12,16 @@ const StyledLink = styled(Link)`
 	&:hover > div {
 		scale: 1.02;
 		background-color: rgb(212, 242, 211);
+		@media screen and (prefers-color-scheme: dark) {
+			background-color: rgb(2, 61, 75);
+		}
+	}
+`;
+
+const PlanetPropertyText = styled(Text.withProps({ span: true, inline: true, fw: 700 }))`
+	color: rgb(2, 61, 75);
+	@media screen and (prefers-color-scheme: dark) {
+		color: #92b7b1;
 	}
 `;
 
@@ -41,15 +51,15 @@ export const SearchResults = () => {
 									inheritPadding
 								>
 									<Text>
-										<Text inline span c="rgb(2, 61, 75)" fw={ 700}>Climate: </Text>
+										<PlanetPropertyText>Climate: </PlanetPropertyText>
 										{startCase(i.climate)?.split(' ')?.join(', ')}
 									</Text>
 									<Text>
-										<Text inline span c="rgb(2, 61, 75)" fw={700}> Terrain: </Text>
+										<PlanetPropertyText> Terrain: </PlanetPropertyText>
 										{startCase(i.terrain)?.split(' ')?.join(', ')}
 									</Text>
 									<Text>
-										<Text inline span c="rgb(2, 61, 75)" fw={700}>Population: </Text>
+										<PlanetPropertyText>Population: </PlanetPropertyText>
 										{Number.isNaN(Number(i.population))
 											? startCase(i.population)
 											: (
@@ -61,7 +71,7 @@ export const SearchResults = () => {
 										}
 									</Text>
 									<Text>
-										<Text inline span c="rgb(2, 61, 75)" fw={700}>Planet Diameter: </Text>
+										<PlanetPropertyText>Planet Diameter: </PlanetPropertyText>
 										<NumberFormatter
 											value={i.diameter}
 											thousandSeparator

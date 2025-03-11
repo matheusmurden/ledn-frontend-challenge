@@ -39,6 +39,16 @@ const FloatingButtonContainer = styled('div')`
 
 const TableHeadCell = styled(Table.Th)`
 	color: rgb(2, 61, 75);
+	@media screen and (prefers-color-scheme: dark) {
+		color: #92b7b1;
+	}
+`;
+
+const TransactionListTitle = styled(Title)`
+	color: rgb(2, 61, 75);
+	@media screen and (prefers-color-scheme: dark) {
+		color: #92b7b1;
+	}
 `;
 
 export const TransactionsList = () => {
@@ -94,7 +104,9 @@ export const TransactionsList = () => {
 		!!filteredTransactions?.length
 		? (
 		<>
-			<Title order={3} c="rgb(2, 61, 75)" my="1rem">Transactions</Title>
+			<TransactionListTitle order={3} my="1rem">
+				Transactions
+			</TransactionListTitle>
 			<TableFilters>
 				<InputLabel>
 					Any

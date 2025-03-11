@@ -9,6 +9,9 @@ const TableHeader = styled(Table.Thead)`
 
 const TableHeadCell = styled(Table.Th)`
 	color: rgb(2, 61, 75);
+	@media screen and (prefers-color-scheme: dark) {
+		color: #92b7b1;
+	}
 `;
 
 export const TransactionsTotal = () => {
