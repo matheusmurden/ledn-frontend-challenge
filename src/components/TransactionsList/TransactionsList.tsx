@@ -1,85 +1,42 @@
 import { useCallback, useEffect, useState } from "react";
 import { useExchangeRateContext, usePlanetContext } from "../../hooks";
-import { Button } from '@mantine/core';
+import { Button, LoadingOverlay, NumberFormatter } from '@mantine/core';
 import { Transaction } from "../../types";
 import { IconForbid2 } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
 
-export const TotalTransactionsByPlanet = () => {
-	const { data, isLoading } = usePlanetContext();
-	const { rate } = useExchangeRateContext();
+import { Table } from '@mantine/core';
+import styled from "styled-components";
 
-	const totalICS = data?.transactions
-		?.filter((i) => i.currency === 'ICS')
-		?.reduce((curr, acc) => {
-		return curr + Math.abs(acc.amount)
-	}, 0) || 0;
+const TableHeader = styled(Table.Thead)`
+	font-size: 1.1rem;
+	font-weight: 700;
+`;
 
-	const totalGCS = data?.transactions
-		?.filter((i) => i.currency === 'GCS')
-		?.reduce((curr, acc) => {
-		return curr + Math.abs(acc.amount)
-	}, 0) || 0;
+const TableFilters = styled('div')`
+	display: flex;
+	gap: 2rem;
+	align-items: center;
+	margin-bottom: 2rem;
+`;
 
-	const netICS = data?.transactions
-		?.filter((i) => i.currency === 'ICS')
-		?.reduce((curr, acc) => {
-		return curr + acc.amount
-	}, 0) || 0;
+const InputLabel = styled('label')`
+	display: flex;
+	flex-direction: column;
+	cursor: pointer;
+`;
 
-	const netGCS = data?.transactions
-		?.filter((i) => i.currency === 'GCS')
-		?.reduce((curr, acc) => {
-		return curr + acc.amount
-	}, 0) || 0;
+const RadioInput = styled('input')`
+	cursor: inherit;
+	accent-color: teal;
+`;
 
-const formatTotal = (value: number) => Intl.NumberFormat(
-	undefined,
-	{
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2
-	}
-).format(value)
-
-const formatNet = (value: number) => Intl.NumberFormat(
-	undefined,
-	{
-		signDisplay: "always",
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2
-	}
-).format(value)
-
-if (isLoading) {
-	return <p>Loading Total Transactions...</p>
-}
-
-	return !!data?.planet?.residents?.length && (
-		<div>
-			<h2>Total ICS Exchanged: {formatTotal(totalICS)}
-				<span style={{ fontSize: '0.9rem', fontWeight: '300', marginLeft: '0.5rem' }}>
-					(Approx. {formatTotal(totalICS * (rate ?? 1))} GSC)
-				</span>
-			</h2>
-			<h3>Net ICS: {formatNet(netICS)}
-				<span style={{ fontSize: '0.7rem', fontWeight: '300', marginLeft: '0.5rem' }}>
-					(Approx. {formatNet(netICS * (rate ?? 1))} GSC)
-				</span>
-			</h3>
-			<hr />
-			<h2>Total GCS Exchanged: {formatTotal(totalGCS)}
-				<span style={{ fontSize: '0.9rem', fontWeight: '300', marginLeft: '0.5rem' }}>
-					(Approx. {formatTotal(totalGCS / (rate ?? 1))} ICS)
-				</span>
-			</h2>
-			<h3>Net GCS: {formatNet(netGCS)}
-				<span style={{ fontSize: '0.7rem', fontWeight: '300', marginLeft: '0.5rem' }}>
-					(Approx. {formatNet(netGCS / (rate ?? 1))} ICS)
-				</span>
-			</h3>
-		</div>
-	)
-}
+const FloatingButtonContainer = styled('div')`
+	position: fixed;
+	z-index: 1001;
+	bottom: 2rem;
+	right: 2rem;
+`;
 
 export const TransactionsList = () => {
 	const { data, isLoading, refetchTransactions } = usePlanetContext();
@@ -107,7 +64,7 @@ export const TransactionsList = () => {
 	}
 
 	const [filteredTransactions, setFilteredTransactions] = useState<Transaction[] | undefined>()
-	const [currency, setCurrency] = useState<'ICS' | 'GCS' | 'Any'>('Any')
+	const [currency, setCurrency] = useState<string>('Any')
 
 	const filterTransactionsByCurrency = useCallback(() => {
 		if (currency === 'Any') {
@@ -130,100 +87,114 @@ export const TransactionsList = () => {
 
 	return <>
 		{
-		isLoading || isLoadingMutation
-		? <p>Loading Planet Transactions...</p> :
+			isLoading ? <p>Loading Transaction Data...</p> :
 		!!filteredTransactions?.length
 		? (
 		<>
 			<h2>Transactions</h2>
-			<div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-				<label style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
+			<TableFilters>
+				<InputLabel>
 					Any
-					<input type="radio" value="Any" checked={currency === 'Any'} onChange={({ target: { value } }) => setCurrency(value as 'Any')} />
-				</label>
-				<label style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
+					<RadioInput
+						type="radio"
+						value="Any"
+						checked={currency === 'Any'}
+						onChange={({ target: { value } }) => setCurrency(value)}
+					/>
+				</InputLabel>
+				<InputLabel>
 					ICS
-					<input type="radio" value="ICS" checked={currency === 'ICS'} onChange={({ target: { value } }) => setCurrency(value as 'ICS')} />
-				</label>
-				<label style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
+					<RadioInput
+						type="radio"
+						value="ICS"
+						checked={currency === 'ICS'}
+						onChange={({ target: { value } }) => setCurrency(value)}
+					/>
+				</InputLabel>
+				<InputLabel>
 					GCS
-					<input type="radio" value="GCS" checked={currency === 'GCS'} onChange={({ target: { value } }) => setCurrency(value as 'GCS')} />
-				</label>
-			</div>
+					<RadioInput
+						type="radio"
+						value="GCS"
+						checked={currency === 'GCS'}
+						onChange={({ target: { value } }) => setCurrency(value)}
+					/>
+				</InputLabel>
+			</TableFilters>
 
-			<table style={{ display: 'table' }}>
-				<thead style={{ width: '100%', fontWeight: '700' }}>
-					<tr style={{ display: 'table-row' }}>
-						<td style={{ padding: '1rem', display: 'table-cell' }}>Currency</td>
-						<td style={{ padding: '1rem', display: 'table-cell' }}>Amount</td>
-						<td style={{ padding: '1rem', display: 'table-cell' }}>Value in GCS</td>
-						<td style={{ padding: '1rem', display: 'table-cell' }}>Value in ICS</td>
-						<td style={{ padding: '1rem', display: 'table-cell' }}>Date</td>
-						<td style={{ padding: '1rem', display: 'table-cell' }}>Status</td>
-					</tr>
-				</thead>
-				<tbody>
-					{filteredTransactions?.map((t) => (
-						<tr key={t.id} style={{ width: '100%', display: 'table-row' }}>
-							<td style={{ padding: '1rem' }}>{t.currency}</td>
-							<td style={{ padding: '1rem' }}>
-								{Intl.NumberFormat(
-									undefined,
-									{
-										signDisplay: "always",
-										minimumFractionDigits: 2,
-										maximumFractionDigits: 2
+			<Table.ScrollContainer minWidth={720}>
+				<Table
+					striped
+					withTableBorder
+					withRowBorders
+					stickyHeader
+					stickyHeaderOffset={0}
+					style={{ position: 'relative' }}
+				>
+					<TableHeader>
+						<Table.Tr>
+							<Table.Td>Currency</Table.Td>
+							<Table.Td>Amount</Table.Td>
+							<Table.Td>Value in GCS</Table.Td>
+							<Table.Td>Value in ICS</Table.Td>
+							<Table.Td>Date</Table.Td>
+							<Table.Td>Status</Table.Td>
+						</Table.Tr>
+					</TableHeader>
+					<Table.Tbody>
+						{filteredTransactions?.map((t) => (
+							<Table.Tr key={t.id}>
+								<Table.Td>{t.currency}</Table.Td>
+								<Table.Td>
+									<NumberFormatter
+										value={t.amount}
+										allowNegative
+										thousandSeparator
+										decimalScale={2}
+									/>
+								</Table.Td>
+								<Table.Td>
+									{t.currency === 'GCS'
+										? '-'
+										: (<NumberFormatter
+											value={(t.amount / (rate ?? 1))}
+											thousandSeparator
+											allowNegative
+											decimalScale={2}
+										/>)
 									}
-								).format(t.amount)}
-							</td>
-							<td style={{ padding: '1rem' }}>
-								{
-									Intl.NumberFormat(
-										undefined,
-										{
-											signDisplay: "never",
-											minimumFractionDigits: 2,
-											maximumFractionDigits: 2
-										}
-									)
-										.format(
-											t.currency === 'GCS'
-												? t.amount
-												: (t.amount / (rate ?? 1))
-										)
-								}
-							</td>
-							<td style={{ padding: '1rem' }}>
-								{
-									Intl.NumberFormat(
-										undefined,
-										{
-											signDisplay: "never",
-											minimumFractionDigits: 2,
-											maximumFractionDigits: 2
-										}
-									)
-										.format(
-											t.currency === 'ICS'
-												? t.amount
-												: (t.amount * (rate ?? 1))
-										)
-								}
-							</td>
-							<td style={{ padding: '1rem' }}>
-								{t.date}
-							</td>
-							<td style={{ padding: '1rem' }}>
-								{statuses[t.status]}
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
+								</Table.Td>
+								<Table.Td>
+									{t.currency === 'ICS'
+										? '-'
+										: (<NumberFormatter
+											value={(t.amount * (rate ?? 1))}
+											thousandSeparator
+											allowNegative
+											decimalScale={2}
+										/>)
+									}
+								</Table.Td>
+								<Table.Td>
+									{t.date}
+								</Table.Td>
+								<Table.Td>
+									{statuses[t.status]}
+								</Table.Td>
+							</Table.Tr>
+						))}
+					</Table.Tbody>
+	        <LoadingOverlay
+						visible={isLoading || isLoadingMutation}
+						zIndex={1000}
+						overlayProps={{ radius: "sm", blur: 2 }}
+					/>
+				</Table>
+			</Table.ScrollContainer>
 		</>
-	) : <p>No Transactions Found</p>
+	) : <p>No transactions to display</p>
 		}
-		<div style={{ position: 'fixed', bottom: '2rem', right: '2rem' }}>
+		<FloatingButtonContainer>
 			<Button
 				color="red"
 				loading={isLoadingMutation}
@@ -235,8 +206,12 @@ export const TransactionsList = () => {
 						stroke={1.5}
 						style={{ marginRight: '0.4rem' }}
 				/>
-				<p>Block all transactions with status <i>In Progress</i></p>
+				<p>
+					{isLoading
+						? 'Loading...'
+						: 'Block all transactions with status In Progress' }
+				</p>
 	     </Button>
-		</div>
+		</FloatingButtonContainer>
 	</>
 };

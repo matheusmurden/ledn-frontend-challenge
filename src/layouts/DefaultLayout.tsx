@@ -1,14 +1,13 @@
 import { Outlet } from "react-router-dom";
 import { useExchangeRateContext } from "../hooks";
+import { FloatingCard } from "../components";
 
 export const DefaultLayout = () => {
 	const { rateAsText } = useExchangeRateContext();
 
 	return (
 		<div style={{ padding: '2rem' }}>
-			<p style={{ position: 'fixed', top: '2rem', right: '2rem' }}>
-				{rateAsText}
-			</p>
+			<FloatingCard>{rateAsText}</FloatingCard>
 			<Outlet />
 		</div>
 	)
