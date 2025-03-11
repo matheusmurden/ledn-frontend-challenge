@@ -6,12 +6,12 @@ export const FloatingCard = ({children}: {children: ReactNode}) => {
 		<Card
 			shadow="sm"
 			padding="sm"
-			radius="md"
+			radius="xl"
 			withBorder
 			style={{
 				position: 'fixed',
-				top: '2rem',
-				right: '2rem',
+				top: '1rem',
+				right: '1rem',
 				zIndex: 1000
 			}}
 		>

@@ -4,8 +4,11 @@ import { usePlanetContext, useExchangeRateContext } from "../../hooks";
 import styled from "styled-components";
 
 const TableHeader = styled(Table.Thead)`
-	font-size: 1.1rem;
 	font-weight: 700;
+`;
+
+const TableHeadCell = styled(Table.Th)`
+	color: rgb(2, 61, 75);
 `;
 
 export const TransactionsTotal = () => {
@@ -37,14 +40,14 @@ if (isLoading) {
 }
 
 	return !!data?.planet?.residents?.length && (
-		<Table.ScrollContainer minWidth={720}>
+		<Table.ScrollContainer minWidth={200}>
 			<Table striped withRowBorders withTableBorder>
 				<TableHeader>
 					<Table.Tr>
-						<Table.Td>Currency</Table.Td>
-						<Table.Td>Total Transaction Amount</Table.Td>
-						<Table.Td>Value in GCS</Table.Td>
-						<Table.Td>Value in ICS</Table.Td>
+						<TableHeadCell>Currency</TableHeadCell>
+						<TableHeadCell>Total Transaction Amount</TableHeadCell>
+						<TableHeadCell>Value in GCS</TableHeadCell>
+						<TableHeadCell>Value in ICS</TableHeadCell>
 					</Table.Tr>
 				</TableHeader>
 				<Table.Tbody>

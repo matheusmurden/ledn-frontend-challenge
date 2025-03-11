@@ -13,6 +13,10 @@ const DetailsContainer = styled('div')`
 	width: 100%;
 	gap: 4rem;
 	align-items: flex-end;
+	@media screen and (max-width: 900px) {
+		align-items: flex-start;
+		flex-direction: column;
+	}
 `;
 
 export const PlanetDetailsPage = () => {

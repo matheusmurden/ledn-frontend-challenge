@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useExchangeRateContext, usePlanetContext } from "../../hooks";
-import { Button, LoadingOverlay, NumberFormatter } from '@mantine/core';
+import { Button, LoadingOverlay, NumberFormatter, Title } from '@mantine/core';
 import { Transaction } from "../../types";
 import { IconForbid2 } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
@@ -9,7 +9,6 @@ import { Table } from '@mantine/core';
 import styled from "styled-components";
 
 const TableHeader = styled(Table.Thead)`
-	font-size: 1.1rem;
 	font-weight: 700;
 `;
 
@@ -34,8 +33,12 @@ const RadioInput = styled('input')`
 const FloatingButtonContainer = styled('div')`
 	position: fixed;
 	z-index: 1001;
-	bottom: 2rem;
-	right: 2rem;
+	bottom: 1rem;
+	right: 1rem;
+`;
+
+const TableHeadCell = styled(Table.Th)`
+	color: rgb(2, 61, 75);
 `;
 
 export const TransactionsList = () => {
@@ -91,7 +94,7 @@ export const TransactionsList = () => {
 		!!filteredTransactions?.length
 		? (
 		<>
-			<h2>Transactions</h2>
+			<Title order={3} c="rgb(2, 61, 75)" my="1rem">Transactions</Title>
 			<TableFilters>
 				<InputLabel>
 					Any
@@ -133,12 +136,12 @@ export const TransactionsList = () => {
 				>
 					<TableHeader>
 						<Table.Tr>
-							<Table.Td>Currency</Table.Td>
-							<Table.Td>Amount</Table.Td>
-							<Table.Td>Value in GCS</Table.Td>
-							<Table.Td>Value in ICS</Table.Td>
-							<Table.Td>Date</Table.Td>
-							<Table.Td>Status</Table.Td>
+							<TableHeadCell>Currency</TableHeadCell>
+							<TableHeadCell>Amount</TableHeadCell>
+							<TableHeadCell>Value in GCS</TableHeadCell>
+							<TableHeadCell>Value in ICS</TableHeadCell>
+							<TableHeadCell>Date</TableHeadCell>
+							<TableHeadCell>Status</TableHeadCell>
 						</Table.Tr>
 					</TableHeader>
 					<Table.Tbody>
@@ -176,7 +179,11 @@ export const TransactionsList = () => {
 									}
 								</Table.Td>
 								<Table.Td>
-									{t.date}
+									{new Date(t.date).toLocaleDateString(undefined, {
+									  year: "numeric",
+									  month: "2-digit",
+									  day: "2-digit",
+									})}
 								</Table.Td>
 								<Table.Td>
 									{statuses[t.status]}

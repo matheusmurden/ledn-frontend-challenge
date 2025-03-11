@@ -2,15 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { uniq } from "lodash";
 import { ChangeEvent, createContext, ReactNode, useCallback, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Planet } from "../types";
 
 const defaultValue: {
 	isLoading: boolean
 	isError: boolean
 	error?: Error | null
-	allPlanets?: { [key: string]: string }[]
+	allPlanets?: Planet[]
 	allClimates?: string[]
 	allTerrains?: string[]
-	filteredResults?: { [key: string]: string }[]
+	filteredResults?: Planet[]
 	filterValues: {
 		name?: string
 		climate?: string
@@ -50,11 +51,16 @@ export const SearchContextProvider = ({ children }: { children: ReactNode }) => 
 		setSearchParams((prev) => ({...Object.fromEntries(prev.entries()), [field]: value }));
 	}
 
-	const allPlanets: { [key: string]: string }[] = data?.planets;
+	const allPlanets: Planet[] = data?.planets;
 
-	const getUniquePropertyValues = useCallback((property: string) => {
+	const getUniquePropertyValues = useCallback((property: keyof Planet) => {
 		return uniq(
-			allPlanets?.flatMap((planet: { [property: string]: string }) => planet?.[property]?.split(', '))
+			allPlanets
+				?.flatMap(
+					(planet) => {
+						const value = planet?.[property] as string;
+						return value?.split(', ');
+					})
 		)?.sort()
 	}, [allPlanets])
 

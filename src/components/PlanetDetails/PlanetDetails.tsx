@@ -1,6 +1,11 @@
 import { startCase } from "lodash";
 import { usePlanetContext } from "../../hooks";
-import { Table } from "@mantine/core";
+import { Table, Title } from "@mantine/core";
+import styled from "styled-components";
+
+const TableHeadCell = styled(Table.Th)`
+	color: rgb(2, 61, 75);
+`;
 
 export const PlanetDetails = () => {
 	const { data, isLoading } = usePlanetContext();
@@ -9,7 +14,11 @@ export const PlanetDetails = () => {
 	}
 	const planet = data?.planet!
 
-	const diameter = Number(planet.diameter);
+	const diameter =
+		Number.isNaN(Number(planet.diameter))
+		? startCase(planet.diameter)
+		:	`${Intl.NumberFormat(undefined, { maximumFractionDigits: 2 })
+		.format(Number(planet.diameter))} Km`
 
 	const population =
 		Number.isNaN(Number(planet.population))
@@ -34,49 +43,58 @@ export const PlanetDetails = () => {
 		.map((i) => startCase(i))
 		.join(', ')
 
+	const orbitalPeriod =
+		Number.isNaN(Number(planet.orbital_period))
+		? startCase(planet.orbital_period)
+		: `${planet.orbital_period} days`
+
+	const rotationPeriod =
+		Number.isNaN(Number(planet.rotation_period))
+		? startCase(planet.rotation_period)
+		: `${planet.rotation_period} hours`
+
 	return (
 		<div>
-			<h1 style={{ marginTop: 0 }}>{planet.name}</h1>
+			<Title order={1} mt={0} mb="2rem" c="teal">{planet.name}</Title>
 			<Table.ScrollContainer minWidth={240}>
 			<Table variant="vertical" withTableBorder striped>
 				<Table.Tbody>
 					<Table.Tr>
-						<Table.Th>Planet Diameter</Table.Th>
+						<TableHeadCell>Planet Diameter</TableHeadCell>
 						<Table.Td>
-							{Intl.NumberFormat(undefined, { maximumFractionDigits: 2 })
-								.format(diameter)} Km
+								{diameter}
 						</Table.Td>
 					</Table.Tr>
 					<Table.Tr>
-						<Table.Th>Climate</Table.Th>
+						<TableHeadCell>Climate</TableHeadCell>
 						<Table.Td>
 							{climate}
 						</Table.Td>
 					</Table.Tr>
 					<Table.Tr>
-						<Table.Th>Terrain</Table.Th>
+						<TableHeadCell>Terrain</TableHeadCell>
 						<Table.Td>
 							{terrain}
 						</Table.Td>
 					</Table.Tr>
 					<Table.Tr>
-						<Table.Th>Surface Water</Table.Th>
+						<TableHeadCell>Surface Water</TableHeadCell>
 						<Table.Td>{surfaceWater}</Table.Td>
 					</Table.Tr>
 					<Table.Tr>
-						<Table.Th>Gravity</Table.Th>
-						<Table.Td>{gravity} {!!gravityLabel && `(${gravityLabel})`}</Table.Td>
+						<TableHeadCell>Gravity</TableHeadCell>
+						<Table.Td>{startCase(gravity)} {!!gravityLabel && `(${gravityLabel})`}</Table.Td>
 					</Table.Tr>
 					<Table.Tr>
-						<Table.Th>Orbital Period</Table.Th>
-						<Table.Td>{planet.orbital_period} days</Table.Td>
+						<TableHeadCell>Orbital Period</TableHeadCell>
+							<Table.Td>{orbitalPeriod}</Table.Td>
 					</Table.Tr>
 					<Table.Tr>
-						<Table.Th>Rotation Period</Table.Th>
-						<Table.Td>{planet.rotation_period} hours</Table.Td>
+						<TableHeadCell>Rotation Period</TableHeadCell>
+							<Table.Td>{rotationPeriod}</Table.Td>
 					</Table.Tr>
 					<Table.Tr>
-						<Table.Th>Population</Table.Th>
+						<TableHeadCell>Population</TableHeadCell>
 						<Table.Td>{population}</Table.Td>
 					</Table.Tr>
 				</Table.Tbody>
