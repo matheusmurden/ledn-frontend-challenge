@@ -1,6 +1,24 @@
 # Intergalactic Planetary Index
 ## Ledn Frontend Challenge
+
+#### Desktop
+[![Video](https://github.com/user-attachments/assets/ad5766de-a6e0-4811-a338-49cbd30f7b37)](https://github.com/user-attachments/assets/4e6ea710-8e55-4c7d-9831-263d65aef158)
+<img width="1512" alt="Screenshot 2025-03-11 at 16 40 53" src="https://github.com/user-attachments/assets/9a50d7df-e4fd-481e-9681-b0bba27590f1" />
+<img width="1511" alt="Screenshot 2025-03-11 at 16 41 25" src="https://github.com/user-attachments/assets/c78b4779-f3be-4ecb-9de2-18105b226f78" />
+<img width="1512" alt="Screenshot 2025-03-11 at 16 41 38" src="https://github.com/user-attachments/assets/4756bd52-68d9-4672-a7e3-bf83353cdfd9" />
 ---
+
+#### Phone
+<img width="871" alt="Screenshot 2025-03-11 at 16 46 54" src="https://github.com/user-attachments/assets/5315bd61-274c-4a83-99e6-d871fc808b23" />
+---
+
+#### Tablet
+<img width="938" alt="Screenshot 2025-03-11 at 16 47 02" src="https://github.com/user-attachments/assets/9a80ad76-456f-4e2a-ba2a-3f
+<img width="887" alt="Screenshot 2025-03-11 at 16 47 21" src="https://github.com/user-attachments/assets/0a40bb7a-ca16-449d-b1c6-d48e61dd87af" />
+4450507015" />
+<img width="837" alt="Screenshot 2025-03-11 at 16 47 35" src="https://github.com/user-attachments/assets/2057e9a6-ccac-47dc-9c95-604561ea76fe" />
+<img width="895" alt="Screenshot 2025-03-11 at 16 47 40" src="https://github.com/user-attachments/assets/cbf75436-7849-4315-b666-38e7bd954d4b" />
+
 ## Flexible requirements chosen:
 1. "Implement a solution capable of turning all transactions with a status of `inProgress` for a given planet to `blocked` using a planet ID."
 2. "Add additional controls to filter the planets by terrain and climate."
